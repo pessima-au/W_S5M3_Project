@@ -3,8 +3,15 @@ function moduleProject3() {
   // 👉 TASK 1 - Write a `buildNav` component that returns a nav
 
   function buildNav(links) {
-    //  ✨ do your magic here
-    return document.createElement('nav')
+    const nav = document.createElement('nav');
+    for (let i = 0; i < links.length; i++) {
+      const anchor = document.createElement('a');
+      anchor.href = links[i].href;
+      anchor.textContent = links[i].textContent;
+      anchor.title = links[i].title;
+      nav.appendChild(anchor);
+    }
+    return nav
   }
 
   // ❗ DOM creation using your `buildNav` component (do not change):
@@ -19,8 +26,44 @@ function moduleProject3() {
   // 👉 TASK 2A - Write a `buildLearnerCard` component that returns a card
 
   function buildLearnerCard(learner, languages) {
-    //  ✨ do your magic here
+    const learnerCard = document.createElement('div');
+    learnerCard.className = "learner-card";
+    const para1 = document.createElement('p');
+    const para2 = document.createElement('p');
+    const para3 = document.createElement('p');
+    const para4 = document.createElement('p');
+
+    
+    para1.textContent = learner.fullName;
+    para2.textContent = `learner ID:${learner.id}`;
+    para3.textContent = `Date of Birth: ${learner.dateOfBirth}`;
+    const favoriteLanguage = languages.find(language => language.id === learner.favLanguage)
+    if (favoriteLanguage) {
+      para4.textContent = `Favorite Language: ${favoriteLanguage.name}`
+    }
+
+
+    learnerCard.appendChild(para1);
+    learnerCard.appendChild(para2);
+    learnerCard.appendChild(para3);
+    learnerCard.appendChild(para4);
+
+
+      learnerCard.addEventListener('click', evt => {
+  
+      const currentlyActive = document.querySelector('.active');
+      if (currentlyActive && currentlyActive !== evt.currentTarget) {
+        currentlyActive.classList.remove('active');
+      }
+        evt.currentTarget.classList.add('active');
+      });
+    
+    
+    return learnerCard
+
   }
+
+ 
 
   {
     // 👉 TASK 2B - Use the two variables below to make learner Cards, and put them in the DOM
@@ -39,14 +82,69 @@ function moduleProject3() {
       { id: 41, fullName: 'Sabah Beydoun', dateOfBirth: '1988-03-25', favLanguage: 91 },
       { id: 17, fullName: 'Daniel Castillo', dateOfBirth: '1995-11-05', favLanguage: 12 }
     ]
-    //  ✨ do your magic here
+     learners.forEach(learner =>  {
+      const card = buildLearnerCard(learner, languages);
+      document.querySelector('section').appendChild(card);
+     });
+
   }
 
   // 👉 TASK 3 - Write a `buildFooter` component that returns a footer
 
   function buildFooter(footerData) {
-    //  ✨ do your magic here
-    return document.createElement('footer')
+  const footer = document.createElement('footer');
+
+    const div1 = document.createElement('div');
+    div1.className = "campany-info";
+
+    const p1 = document.createElement('p');
+    const p2 = document.createElement('p');
+    const p3 = document.createElement('p');
+
+    const anchor = document.createElement('a')
+    anchor.href = `mailto:${footerData.contactEmail}`;
+    anchor.textContent = footerData.contactEmail;
+    
+    p1.className = 'company-name';
+    p1.textContent = footerData.companyName;
+
+    p2.className = 'address';
+    p2.textContent = footerData.address;
+
+    p3.className = 'contact-email'
+    p3.textContent = "Email: ";
+
+    p3.insertAdjacentElement('beforeend', anchor);
+    div1.appendChild(p1);
+    div1.appendChild(p2);
+    div1.appendChild(p3);
+
+    const div2 = document.createElement('div');
+    div2.className = "social-media";
+
+    const a1 = document.createElement('a');
+    const a2 = document.createElement('a');
+    const a3 = document.createElement('a');
+    a1.href = footerData.socialMedia.twitter;
+    a1.innerText = 'Twitter'
+    a2.href = footerData.socialMedia.facebook;
+    a2.innerText = 'facebook'
+    a3.href = footerData.socialMedia.instagram;
+    a3.innerText = 'Instagram'
+    div2.append(a1);
+    div2.append(a2)
+    div2.append(a3)
+    
+
+    const div3 = document.createElement('div');
+    div3.textContent = `© ${footerData.companyName.toUpperCase()} 2024`;
+
+    
+    footer.appendChild(div1);
+    footer.appendChild(div2);
+    footer.appendChild(div3);
+
+    return footer;
   }
 
   // ❗ DOM creation using your `buildFooter` component (do not change):
@@ -63,7 +161,17 @@ function moduleProject3() {
 
   // 👉 TASK 4 - Clicking on the section should deactivate the active card
 
-  //  ✨ do your magic here
+  const section = document.querySelector('section');
+  section.addEventListener('click', event => {
+    const isActive = document.querySelector('.active');
+    const card = event.target.closest('.learner-card');
+    if (!card && isActive) {
+    isActive.classList.remove('active');
+   } else if (card) {
+    card.classList.add('active');
+   }
+
+  })
 }
 
 // ❗ DO NOT CHANGE THIS CODE
